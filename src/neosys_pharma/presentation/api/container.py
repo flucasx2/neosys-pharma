@@ -92,7 +92,7 @@ def _mettre_a_niveau_schema_legacy(engine: Engine) -> None:
             "reglements": "JSON NOT NULL DEFAULT '[]'",
             "carte_fidelite_id": "VARCHAR(36)",
             "points_utilises": "INTEGER NOT NULL DEFAULT 0",
-            "encaissee_le": "DATETIME",
+            "encaissee_le": "TIMESTAMP",
         }
         with engine.begin() as connexion:
             for name, sqltype in additions.items():
