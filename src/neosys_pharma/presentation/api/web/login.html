@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Connexion — NeoSys Pharma</title>
+  <style>
+    :root{font-family:Inter,system-ui,sans-serif;color:#17221d;background:#edf4f1}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}.login{width:min(440px,100%);background:#fff;border:1px solid #dbe6e1;border-radius:24px;padding:38px;box-shadow:0 20px 60px #173f2d1c}.brand{margin:0 0 8px;color:#14734f;font-size:.78rem;font-weight:800;letter-spacing:.16em}.login h1{margin:0;font-size:2rem}.intro{color:#66756e;margin:10px 0 28px}.error{display:none;color:#a52a2a;background:#fff0f0;border-radius:10px;padding:12px}.error.visible{display:block}label{display:grid;gap:8px;margin-top:18px;font-weight:750}input{width:100%;padding:14px;border:1px solid #cddbd4;border-radius:10px;font:inherit}input:focus{outline:3px solid #14734f1f;border-color:#14734f}button{width:100%;margin-top:26px;padding:15px;border:0;border-radius:10px;background:#14734f;color:#fff;font:inherit;font-weight:800;cursor:pointer}.help{text-align:center;color:#78857f;font-size:.88rem;margin:22px 0 0}.help a{color:#14734f;font-weight:700}</style>
+</head>
+<body><main class="login"><p class="brand">NEOSYS PHARMA</p><h1>Bienvenue</h1><p class="intro">Connectez-vous pour accéder à l’encaissement et aux outils de démonstration.</p><p id="login-error" class="error" role="alert">Identifiant ou mot de passe incorrect.</p><form method="post" action="/connexion"><input id="next" name="suivant" type="hidden" value="/encaissement"><label>Identifiant<input name="identifiant" autocomplete="username" required autofocus></label><label>Mot de passe<input name="mot_de_passe" type="password" autocomplete="current-password" required></label><button type="submit">Se connecter</button></form><p class="help">Une solution <a href="https://neosysconsulting.com" target="_blank" rel="noopener noreferrer">NeoSys Consulting</a></p></main><script>const p=new URLSearchParams(location.search),n=p.get("suivant");if(n&&n.startsWith("/")&&!n.startsWith("//"))document.getElementById("next").value=n;if(p.has("erreur"))document.getElementById("login-error").classList.add("visible");</script></body>
+</html>
