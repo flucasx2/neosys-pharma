@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NeoSys Pharma — Gestion</title>
+  <link rel="stylesheet" href="/assets/gestion.css?v=1.7.0">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">N</span><div><strong>NeoSys</strong><small>PHARMA</small></div></div>
+    <nav aria-label="Navigation principale">
+      <button class="nav-item active" data-view="dashboard"><span>⌂</span> Tableau de bord</button>
+      <button class="nav-item" data-view="catalogue"><span>▦</span> Produits</button>
+      <button class="nav-item" data-view="stock"><span>▤</span> Stock & lots</button>
+      <button class="nav-item" data-view="achats"><span>▧</span> Commandes & réceptions</button>
+      <button class="nav-item" data-view="postes"><span>▣</span> Postes de vente</button>
+      <button class="nav-item" data-view="fournisseurs"><span>◇</span> Fournisseurs</button>
+      <button class="nav-item" data-view="couvertures"><span>◉</span> Prises en charge</button>
+      <button class="nav-item" data-view="fidelite"><span>♡</span> Fidélité clients</button>
+      <button class="nav-item" data-view="administration"><span>⚙</span> Administration</button>
+    </nav>
+    <a class="console-link" href="/console">Ouvrir la console de vente <span>↗</span></a>
+    <div class="sidebar-foot"><span class="online-dot"></span> API opérationnelle</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><p class="overline">ESPACE DE GESTION</p><h1 id="page-title">Tableau de bord</h1></div>
+      <div class="header-actions">
+        <button id="demo-data" class="button secondary">Charger les données de démonstration</button>
+        <button class="button primary" data-open="produit-dialog">+ Nouveau produit</button>
+      </div>
+    </header>
+
+    <div id="flash" role="status" aria-live="polite"></div>
+
+    <section class="view active" id="view-dashboard">
+      <div class="hero">
+        <div><p class="overline light">VUE D'ENSEMBLE</p><h2>La pharmacie, en un coup d'œil.</h2>
+          <p>Préparez le catalogue et le stock utilisés directement par la console de vente.</p></div>
+        <div class="hero-badge"><span id="today"></span><strong>Prototype opérationnel</strong></div>
+      </div>
+      <div class="metrics">
+        <article class="metric"><span>Produits</span><strong id="metric-products">0</strong><small>références au catalogue</small></article>
+        <article class="metric"><span>Articles</span><strong id="metric-articles">0</strong><small>conditionnements vendables</small></article>
+        <article class="metric"><span>Stock disponible</span><strong id="metric-stock">0</strong><small>unités tous emplacements</small></article>
+        <article class="metric"><span>Postes</span><strong id="metric-postes">0</strong><small>points de vente configurés</small></article>
+      </div>
+      <div class="dashboard-grid">
+        <article class="panel">
+          <div class="panel-head"><div><p class="overline">STOCK</p><h3>Lots à surveiller</h3></div><button class="text-button" data-go="stock">Voir le stock →</button></div>
+          <div id="dashboard-stock" class="list-placeholder">Aucune donnée de stock.</div>
+        </article>
+        <article class="panel quick-panel">
+          <div class="panel-head"><div><p class="overline">DÉMARRAGE RAPIDE</p><h3>Préparer une démonstration</h3></div></div>
+          <ol class="steps">
+            <li><span>1</span><div><strong>Créer les produits</strong><small>Référence, désignation et prix</small></div></li>
+            <li><span>2</span><div><strong>Réceptionner les lots</strong><small>Quantités et dates d'expiration</small></div></li>
+            <li><span>3</span><div><strong>Configurer le poste</strong><small>Relier la console à son emplacement</small></div></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="view-catalogue">
+      <div class="section-heading"><div><p class="overline">CATALOGUE</p><h2>Produits et conditionnements</h2><p>Les articles créés ici deviennent disponibles dans la console de vente.</p></div><button class="button primary" data-open="produit-dialog">+ Ajouter</button></div>
+      <div class="panel table-panel">
+        <div class="table-tools"><input id="product-search" type="search" placeholder="Rechercher une référence, un produit ou un code…"><span id="product-count">0 produit</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Référence</th><th>CIP7</th><th>Désignation</th><th>Type</th><th>Conditionnement</th><th>Code</th><th>Stock</th><th>Prix</th><th></th></tr></thead><tbody id="products-table"></tbody></table></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-achats">
+      <div class="section-heading"><div><p class="overline">APPROVISIONNEMENT</p><h2>Commandes et réceptions fournisseurs</h2><p>Saisissez la commande, contrôlez les quantités reçues et alimentez le stock en une seule validation.</p></div><button class="button primary" data-open="commande-dialog">+ Nouvelle commande / réception</button></div>
+      <div class="metrics compact"><article class="metric"><span>Commandes réceptionnées</span><strong id="purchase-count">0</strong></article><article class="metric"><span>Valeur réceptionnée</span><strong id="purchase-total">0</strong><small>FCFA</small></article><article class="metric"><span>Dernière commande</span><strong id="last-purchase">—</strong></article></div>
+      <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>N° interne</th><th>Fournisseur</th><th>Commande fournisseur</th><th>Date commande</th><th>Arrivée</th><th>Lignes</th><th>Total reçu</th><th></th></tr></thead><tbody id="purchases-table"></tbody></table></div></div>
+    </section>
+
+    <section class="view" id="view-stock">
+      <div class="section-heading"><div><p class="overline">INVENTAIRE</p><h2>Stock et lots</h2><p>Réceptions, emplacements et disponibilité en temps réel.</p></div><div class="group-actions"><button class="button secondary" data-open="emplacement-dialog">+ Emplacement</button><button class="button primary" data-open="reception-dialog">+ Réception</button></div></div>
+      <div class="metrics compact"><article class="metric"><span>Emplacements</span><strong id="stock-locations">0</strong></article><article class="metric"><span>Lots</span><strong id="stock-lots">0</strong></article><article class="metric"><span>Stock vendable</span><strong id="stock-available">0</strong></article></div>
+      <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Produit</th><th>Lot</th><th>Expiration</th><th>Emplacement</th><th>Stock physique</th><th>Stock réservé</th><th>Stock vendable</th></tr></thead><tbody id="stock-table"></tbody></table></div></div>
+    </section>
+
+    <section class="view" id="view-postes">
+      <div class="section-heading"><div><p class="overline">VENTES</p><h2>Postes de vente</h2><p>Chaque poste utilise le stock de l'emplacement auquel il est rattaché.</p></div><button class="button primary" data-open="poste-dialog">+ Nouveau poste</button></div>
+      <div id="postes-grid" class="cards-grid"></div>
+    </section>
+
+    <section class="view" id="view-fournisseurs">
+      <div class="section-heading"><div><p class="overline">ACHATS</p><h2>Fournisseurs et tarifs d'achat</h2><p>Gérez les contacts et associez à chaque article son prix chez chaque fournisseur.</p></div><div class="group-actions"><button class="button secondary" data-open="catalogue-import-dialog">Importer un catalogue</button><button class="button secondary" data-open="tarif-dialog">+ Tarif d'achat</button><button class="button primary" data-open="fournisseur-dialog">+ Fournisseur</button></div></div>
+      <div class="supplier-grid">
+        <article class="panel table-panel"><div class="panel-head"><div><p class="overline">RÉPERTOIRE</p><h3>Fournisseurs</h3></div><span id="supplier-count" class="counter">0</span></div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Raison sociale</th><th>Contact</th><th>État</th><th></th></tr></thead><tbody id="suppliers-table"></tbody></table></div></article>
+        <article class="panel table-panel"><div class="panel-head"><div><p class="overline">CONDITIONS D'ACHAT</p><h3>Tarifs par article</h3></div><span id="tariff-count" class="counter">0</span></div><div class="table-wrap"><table><thead><tr><th>Fournisseur</th><th>Article</th><th>Réf. fournisseur</th><th>Achat</th><th>Vente</th><th>Marge</th><th></th></tr></thead><tbody id="tariffs-table"></tbody></table></div></article>
+      </div>
+    </section>
+
+    <section class="view" id="view-couvertures">
+      <div class="section-heading"><div><p class="overline">PRISES EN CHARGE</p><h2>CNAMGS, mutuelles et assurances</h2><p>Configurez les organismes et les pièces que le patient doit présenter.</p></div><button class="button primary" data-open="organisme-dialog">+ Nouvel organisme</button></div>
+      <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Code</th><th>Organisme</th><th>Type</th><th>Documents / informations requis</th><th>État</th><th></th></tr></thead><tbody id="organismes-table"></tbody></table></div></div>
+    </section>
+
+    <section class="view" id="view-fidelite">
+      <div class="section-heading"><div><p class="overline">FIDÉLITÉ</p><h2>Clients et cartes de fidélité</h2><p>Gérez les cartes physiques ou virtuelles et suivez leur solde de points.</p></div><div class="group-actions"><button class="button secondary" data-open="client-dialog">+ Client</button><button class="button primary" data-open="carte-dialog">+ Carte</button></div></div>
+      <div class="metrics compact"><article class="metric"><span>Clients</span><strong id="loyalty-client-count">0</strong></article><article class="metric"><span>Cartes actives</span><strong id="loyalty-card-count">0</strong></article><article class="metric"><span>Points en circulation</span><strong id="loyalty-points">0</strong></article></div>
+      <div class="supplier-grid"><article class="panel table-panel"><div class="panel-head"><div><p class="overline">CLIENTS</p><h3>Répertoire fidélité</h3></div></div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Client</th><th>Contact</th><th>État</th><th></th></tr></thead><tbody id="loyalty-clients-table"></tbody></table></div></article><article class="panel table-panel"><div class="panel-head"><div><p class="overline">CARTES</p><h3>Cartes émises</h3></div></div><div class="table-wrap"><table><thead><tr><th>N° carte</th><th>Client</th><th>Type</th><th>Points</th><th>État</th><th></th></tr></thead><tbody id="loyalty-cards-table"></tbody></table></div></article></div>
+    </section>
+    <section class="view" id="view-administration"><div class="section-heading"><div><p class="overline">ADMINISTRATION</p><h2>Caisses et comptes</h2><p>Créez d'abord les caisses, puis associez-les aux postes de vente.</p></div><div class="group-actions"><button class="button secondary" data-open="caisse-dialog">+ Nouvelle caisse</button><button class="button primary" data-open="compte-dialog">+ Nouveau compte</button></div></div><div class="supplier-grid"><div class="panel table-panel"><div class="panel-head"><h3>Caisses</h3></div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Libellé</th><th>État</th></tr></thead><tbody id="caisses-table"></tbody></table></div></div><div class="panel table-panel"><div class="panel-head"><h3>Comptes opérateurs</h3></div><div class="table-wrap"><table><thead><tr><th>Compte</th><th>Nom</th><th>Poste</th><th>Caisse</th><th>État</th><th></th></tr></thead><tbody id="accounts-table"></tbody></table></div></div></div></section>
+  </main>
+
+  <dialog id="client-dialog"><form id="client-form" class="dialog-form"><input type="hidden" name="client_id"><header><div><p class="overline">FIDÉLITÉ</p><h2 id="client-dialog-title">Nouveau client</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Code<input name="code" readonly placeholder="GÉNÉRÉ À LA VALIDATION"></label><label>Nom<input name="nom" required></label><label>Prénom<input name="prenom"></label><label>Téléphone<input name="telephone"></label><label class="wide">E-mail<input name="email" type="email" data-preserve-case></label><label class="check wide"><input name="actif" type="checkbox" checked> Client actif</label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button type="submit" class="button primary">Enregistrer</button></footer></form></dialog>
+  <dialog id="carte-dialog"><form id="carte-form" class="dialog-form"><input type="hidden" name="carte_id"><header><div><p class="overline">FIDÉLITÉ</p><h2 id="carte-dialog-title">Nouvelle carte</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label class="wide">Client<select name="client_id_select" id="loyalty-card-client" required></select></label><label>Type<select name="type_carte"><option value="PHYSIQUE">Physique</option><option value="VIRTUELLE">Virtuelle</option></select></label><label class="check"><input name="actif" type="checkbox" checked> Carte active</label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button type="submit" class="button primary">Enregistrer</button></footer></form></dialog>
+  <dialog id="points-dialog"><form id="points-form" class="dialog-form"><input type="hidden" name="carte_id"><header><div><p class="overline">FIDÉLITÉ</p><h2>Mouvement de points</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Points (+ ou −)<input name="points" type="number" required></label><label class="wide">Motif<input name="motif" required maxlength="300"></label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button type="submit" class="button primary">Valider</button></footer></form></dialog>
+  <dialog id="compte-dialog"><form id="account-form" class="dialog-form"><input type="hidden" name="compte_id"><header><div><p class="overline">ADMINISTRATION</p><h2 id="account-dialog-title">Nouveau compte</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Code compte<input name="code" required placeholder="C01"></label><label>Nom / libellé<input name="nom" required placeholder="COMPTE DE VENTE 1"></label><label>Rôle<select name="role"><option value="VENTE">Vente</option><option value="PREPARATION">Préparation</option></select></label><label>Poste associé<select name="poste_id" id="account-poste"><option value="">AUCUN</option></select></label><label>Caisse associée<select name="caisse" id="account-caisse" required></select></label><label class="check"><input name="actif" type="checkbox" checked> Compte actif</label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button type="submit" class="button primary">Enregistrer</button></footer></form></dialog>
+
+  <dialog id="produit-dialog"><form id="product-form" class="dialog-form"><input type="hidden" name="product_id"><input type="hidden" name="conditionnement_id"><header><div><p class="overline">CATALOGUE</p><h2 id="product-dialog-title">Nouveau produit</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid">
+    <label>Type de produit<select name="type" id="product-type"><option value="medicament">Médicament</option><option value="cosmetique">Produit cosmétique</option></select></label>
+    <label>Référence automatique<input name="reference" maxlength="50" placeholder="GÉNÉRÉE À LA VALIDATION" readonly></label>
+    <label>CIP7<input name="cip7" required inputmode="numeric" pattern="[0-9]{7}" maxlength="7" placeholder="1234567"></label>
+    <label class="wide">Désignation<input name="designation" required maxlength="200" placeholder="PARACÉTAMOL 500 MG"></label>
+    <label class="wide" id="principle-field"><span>Principe actif</span><select name="principe_actif_id" id="product-principle" required></select></label>
+    <label class="wide hidden" id="brand-field"><span>Marque</span><select name="marque_id" id="product-brand"></select></label>
+    <label class="check wide"><input name="pris_en_charge_cnamgs" id="product-cnamgs" type="checkbox"> Produit pris en charge par la CNAMGS</label>
+    <label class="wide hidden" id="cnamgs-rate-field">Taux de prise en charge CNAMGS (%)<input name="taux_prise_en_charge_cnamgs" type="number" min="0.01" max="100" step="0.01" value="80"></label>
+    <div class="separator wide"><span>Conditionnement initial</span></div>
+    <label>Code article automatique<input name="code" maxlength="50" placeholder="GÉNÉRÉ À LA VALIDATION" readonly></label>
+    <label>Prix de vente (FCFA)<input name="prix_vente" required type="number" min="1" step="1" placeholder="2500"></label>
+    <label class="wide">Libellé<input name="libelle" required maxlength="200" placeholder="Boîte de 20 comprimés"></label>
+  </div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" id="product-submit" type="submit">Créer le produit</button></footer></form></dialog>
+
+  <dialog id="fournisseur-dialog"><form id="supplier-form" class="dialog-form"><input type="hidden" name="fournisseur_id"><header><div><p class="overline">ACHATS</p><h2 id="supplier-dialog-title">Nouveau fournisseur</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Code automatique<input name="code" maxlength="50" placeholder="GÉNÉRÉ À LA VALIDATION" readonly></label><label>Raison sociale<input name="raison_sociale" required maxlength="200" placeholder="PHARMA DISTRIBUTION"></label><label>Téléphone<input name="telephone" maxlength="50" placeholder="+241 01 23 45 67"></label><label>E-mail<input name="email" type="email" data-preserve-case maxlength="200" placeholder="commandes@fournisseur.ga"></label><label class="check wide"><input name="actif" type="checkbox" checked> Fournisseur actif</label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" id="supplier-submit" type="submit">Créer le fournisseur</button></footer></form></dialog>
+
+  <dialog id="catalogue-import-dialog"><form id="catalogue-import-form" class="dialog-form"><header><div><p class="overline">IMPORT FOURNISSEUR</p><h2>Importer un catalogue CSV</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label class="wide">Fournisseur existant<select name="fournisseur_id" id="catalogue-import-supplier" required></select></label><label class="wide">Traitement<select name="mode" id="catalogue-import-mode" required><option value="MISE_A_JOUR_TARIFS">Mise à jour des tarifs d'achat et de vente</option><option value="MISE_EN_PLACE">Mise en place — remplacer entièrement le catalogue</option></select></label><label class="wide">Catalogue CSV enrichi<input name="catalogue" type="file" accept=".csv,text/csv" data-preserve-case required></label><p class="wide form-hint">Colonnes obligatoires : CIP, Description, DCI, PrixAchat et PrixVente.</p><div class="wide import-danger hidden" id="catalogue-reset-warning"><strong>Attention : opération destructive</strong><p>Les produits actuels, stocks, commandes, préparations et tarifs seront supprimés avant l'import.</p><label class="check"><input name="confirmer_mise_en_place" type="checkbox"> Je confirme le remplacement complet du catalogue</label></div></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" id="catalogue-import-submit" type="submit">Importer le catalogue</button></footer></form></dialog>
+
+  <dialog id="commande-dialog" class="wide-dialog"><form id="purchase-form" class="dialog-form"><header><div><p class="overline">APPROVISIONNEMENT</p><h2>Nouvelle commande / réception</h2></div><button type="button" class="close" data-close>×</button></header><div class="purchase-body"><div class="form-grid purchase-header"><label>N° commande interne<input id="purchase-number" value="GÉNÉRÉ AUTOMATIQUEMENT" readonly></label><label>N° commande fournisseur<input name="numero_fournisseur" maxlength="100" placeholder="BC-2026-001"></label><label>Fournisseur<select name="fournisseur_id" id="purchase-supplier" required></select></label><label>Emplacement de réception<select name="emplacement_id" id="purchase-location" required></select></label><label>Date de commande<input name="date_commande" type="date" required></label><label>Date d'arrivée<input name="date_arrivee" type="date" required></label></div><div class="purchase-total"><span>TOTAL GÉNÉRAL RÉCEPTIONNÉ</span><strong id="purchase-grand-total">0 FCFA</strong></div><div class="purchase-table-wrap"><table class="purchase-table"><thead><tr><th>Désignation produit</th><th>CIP7</th><th>Qté commandée</th><th>Qté reçue</th><th>N° lot</th><th>Péremption</th><th>Prix unitaire</th><th>Total ligne</th><th></th></tr></thead><tbody id="purchase-lines"></tbody></table></div><button type="button" class="button secondary add-line" id="add-purchase-line">+ Ajouter une ligne</button></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" type="submit">Valider la commande et la réception</button></footer></form></dialog>
+
+  <dialog id="article-search-dialog" class="search-dialog"><div class="dialog-form"><header><div><p class="overline">RECHERCHE PRODUIT</p><h2>Sélectionner un article</h2></div><button type="button" class="close" data-close>×</button></header><div class="search-content"><input id="article-search-modal" type="search" placeholder="DÉSIGNATION, CIP7, RÉFÉRENCE OU CODE"><div id="article-search-results" class="search-results"></div></div></div></dialog>
+
+  <dialog id="detail-dialog" class="detail-dialog"><div class="dialog-form"><header><div><p class="overline">CONSULTATION</p><h2 id="detail-title">Détail</h2></div><button type="button" class="close" data-close>×</button></header><div id="detail-content" class="detail-content"></div><footer><button type="button" class="button secondary" data-close>Fermer</button></footer></div></dialog>
+
+  <dialog id="organisme-dialog"><form id="organisme-form" class="dialog-form"><input type="hidden" name="organisme_id"><header><div><p class="overline">PRISES EN CHARGE</p><h2 id="organisme-dialog-title">Nouvel organisme</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Code<input name="code" readonly placeholder="GÉNÉRÉ À LA VALIDATION"></label><label>Type<select name="type_organisme" required><option value="CNAMGS">CNAMGS</option><option value="MUTUELLE">Mutuelle</option><option value="ASSURANCE_PRIVEE">Assurance privée</option></select></label><label class="wide">Nom de l'organisme<input name="nom" required maxlength="200" placeholder="CNAMGS"></label><label>Taux de prise en charge (%)<input name="taux_prise_en_charge" type="number" min="0" max="100" step="0.01" value="0" required></label><label class="check"><input name="actif" type="checkbox" checked> Organisme actif</label><div class="separator wide"><span>Documents et informations requis</span></div><div class="wide document-editor"><div id="required-documents"></div><button class="button secondary" id="add-required-document" type="button">+ Ajouter une pièce</button></div></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" id="organisme-submit" type="submit">Créer l'organisme</button></footer></form></dialog>
+
+  <dialog id="tarif-dialog"><form id="tariff-form" class="dialog-form"><input type="hidden" name="tarif_id"><header><div><p class="overline">CONDITIONS D'ACHAT</p><h2 id="tariff-dialog-title">Définir un tarif fournisseur</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label class="wide">Fournisseur<select name="fournisseur_id" id="tariff-supplier" required></select></label><label class="wide">Article / conditionnement<select name="conditionnement_id" id="tariff-article" required></select></label><label>Prix d'achat (FCFA)<input name="prix_achat" type="number" min="1" step="1" required placeholder="950"></label><label>Référence produit chez le fournisseur<input name="reference_fournisseur" maxlength="100" placeholder="REF-FOUR-123"></label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" id="tariff-submit" type="submit">Enregistrer le tarif</button></footer></form></dialog>
+
+  <dialog id="emplacement-dialog"><form id="location-form" class="dialog-form"><header><div><p class="overline">STOCK</p><h2>Nouvel emplacement</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Code<input name="code" required placeholder="RAYON-01"></label><label>Libellé<input name="libelle" required placeholder="Rayon principal"></label><label class="check wide"><input name="autorise_vente" type="checkbox" checked> Autoriser les ventes depuis cet emplacement</label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" type="submit">Créer</button></footer></form></dialog>
+
+  <dialog id="reception-dialog"><form id="reception-form" class="dialog-form"><header><div><p class="overline">STOCK</p><h2>Réceptionner un lot</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label class="wide">Article<select name="conditionnement_id" id="reception-article" required></select></label><label>Numéro de lot<input name="numero_lot" required placeholder="LOT-2026-001"></label><label>Date d'expiration<input name="date_expiration" type="date" required></label><label>Emplacement<select name="emplacement_id" id="reception-location" required></select></label><label>Quantité<input name="quantite" type="number" min="1" required value="100"></label><label class="wide">Motif / pièce<input name="motif" required value="Réception fournisseur" maxlength="300"></label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" type="submit">Valider la réception</button></footer></form></dialog>
+
+  <dialog id="poste-dialog"><form id="poste-form" class="dialog-form"><header><div><p class="overline">VENTES</p><h2>Nouveau poste</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Code du poste<input name="code" required placeholder="POSTE-01"></label><label>Emplacement<select name="emplacement_id" id="poste-location" required></select></label><label class="wide">Caisse associée<select name="caisse_id" id="poste-caisse" required></select></label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" type="submit">Créer le poste</button></footer></form></dialog>
+  <dialog id="caisse-dialog"><form id="caisse-form" class="dialog-form"><header><div><p class="overline">ADMINISTRATION</p><h2>Nouvelle caisse</h2></div><button type="button" class="close" data-close>×</button></header><div class="form-grid"><label>Code<input name="code" required placeholder="CAISSE1"></label><label>Libellé<input name="libelle" required placeholder="CAISSE PRINCIPALE"></label></div><footer><button type="button" class="button secondary" data-close>Annuler</button><button class="button primary" type="submit">Créer la caisse</button></footer></form></dialog>
+
+  <script src="/assets/gestion.js?v=1.7.0" defer></script>
+</body>
+</html>

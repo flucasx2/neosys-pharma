@@ -1,0 +1,33 @@
+from neosys_pharma.domain.catalogue.entities import (
+    CarteFidelite,
+    ClientFidelite,
+    CommandeAchat,
+    Fournisseur,
+    LigneCommandeAchat,
+    Marque,
+    Medicament,
+    MouvementFidelite,
+    OrganismePriseEnCharge,
+    PrincipeActif,
+    Produit,
+    ProduitConditionnement,
+    ProduitCosmetique,
+    TarifFournisseur,
+)
+
+__all__ = [
+    "CarteFidelite",
+    "ClientFidelite",
+    "CommandeAchat",
+    "Fournisseur",
+    "LigneCommandeAchat",
+    "Marque",
+    "Medicament",
+    "MouvementFidelite",
+    "OrganismePriseEnCharge",
+    "PrincipeActif",
+    "Produit",
+    "ProduitConditionnement",
+    "ProduitCosmetique",
+    "TarifFournisseur",
+]

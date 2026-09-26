@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NeoSys Pharma — Console de vente</title>
+  <link rel="stylesheet" href="/assets/console.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">NEOSYS PHARMA</p>
+      <h1>Console de vente</h1>
+    </div>
+    <div class="top-actions"><a href="/gestion">Gestion</a><div class="status"><span></span> Système opérationnel</div></div>
+  </header>
+
+  <main>
+    <section class="toolbar card">
+      <label>Poste de vente
+        <select id="poste"><option value="">Chargement…</option></select>
+      </label>
+      <div class="sale-meta">
+        <span>Ticket</span>
+        <strong id="vente-label">Aucune vente ouverte</strong>
+      </div>
+      <button id="nouvelle-vente" class="primary">Nouvelle vente</button>
+    </section>
+
+    <div id="message" role="status" aria-live="polite"></div>
+
+    <div class="workspace">
+      <section class="catalogue card">
+        <div class="section-title">
+          <div><p class="eyebrow">CATALOGUE</p><h2>Rechercher un article</h2></div>
+          <span id="article-count" class="pill">0 article</span>
+        </div>
+        <input id="recherche" class="search" type="search"
+               placeholder="Nom, référence ou code…" autocomplete="off">
+        <div id="articles" class="article-list"></div>
+      </section>
+
+      <section class="panier card">
+        <div class="section-title">
+          <div><p class="eyebrow">VENTE EN COURS</p><h2>Panier</h2></div>
+          <span id="etat" class="pill neutral">—</span>
+        </div>
+        <div id="lignes" class="cart-lines">
+          <div class="empty">Créez une vente, puis ajoutez des articles.</div>
+        </div>
+        <div class="total"><span>Total</span><strong id="total">0 FCFA</strong></div>
+        <div class="actions">
+          <button id="annuler" class="danger" disabled>Annuler</button>
+          <button id="preparer" class="primary" disabled>Préparer la vente</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="/assets/console.js" defer></script>
+</body>
+</html>

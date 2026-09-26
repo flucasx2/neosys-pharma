@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NeoSys Pharma — Encaissement</title><link rel="stylesheet" href="/assets/gestion.css?v=1.7.0"><link rel="stylesheet" href="/assets/encaissement.css?v=1.7.0"></head>
+<body class="cash-page"><main class="cash-shell">
+  <header class="cash-header"><div><p class="overline">NEOSYS PHARMA · CAISSE</p><h1>Encaissement</h1><p>Tickets préparés en attente de règlement</p></div><nav><a class="button secondary" href="/vente">Préparation</a><a class="button secondary" href="/gestion">Gestion</a></nav></header>
+  <section class="cash-modes panel"><button type="button" class="cash-mode active" data-mode="simple">Encaissement simple</button><button type="button" class="cash-mode" data-mode="multiple">Encaissement multiple</button><button type="button" class="button secondary" id="cash-refresh">Actualiser</button></section>
+  <div class="cash-layout">
+    <section class="panel tickets-panel"><div class="panel-head"><div><p class="overline">TICKETS</p><h2>À encaisser</h2></div><strong id="ticket-count">0 ticket</strong></div><div class="table-wrap"><table><thead><tr><th></th><th>Ticket</th><th>Date</th><th>Patient / client</th><th>Lignes</th><th>Montant</th></tr></thead><tbody id="cash-tickets"></tbody></table></div></section>
+    <form id="cash-form" class="panel cash-form"><div><p class="overline">RÈGLEMENT</p><h2>Finaliser la vente</h2></div>
+      <div class="cash-total"><span>Total tickets</span><strong id="cash-total">0 FCFA</strong></div>
+      <div class="loyalty-lookup"><label>Numéro de carte ou scan<input id="loyalty-card-number" autocomplete="off" placeholder="FID-000001" spellcheck="false"></label><button type="button" class="button secondary" id="verify-loyalty-card">Vérifier</button></div>
+      <label>Client identifié<input id="loyalty-holder" readonly placeholder="AUCUNE CARTE RENSEIGNÉE"></label>
+      <div class="loyalty-balance"><span>Solde disponible</span><strong id="loyalty-balance">0 point</strong></div>
+      <p id="loyalty-status" class="loyalty-status">Saisissez ou scannez la carte présentée par le client.</p>
+      <label>Points utilisés <small>1 point = 10 FCFA</small><input id="points-used" type="number" min="0" value="0"></label>
+      <div class="cash-total due"><span>À régler</span><strong id="cash-due">0 FCFA</strong></div>
+      <div id="payment-lines"></div><button type="button" class="button secondary" id="add-payment">+ Mode de paiement</button>
+      <div class="cash-balance"><span>Reste à répartir</span><strong id="cash-balance">0 FCFA</strong></div>
+      <button class="button primary cash-submit" type="submit">Valider l’encaissement</button><p id="cash-message" role="status"></p>
+    </form>
+  </div>
+  <footer class="cash-brand">Une solution conçue par <a href="https://neosysconsulting.com" target="_blank" rel="noopener noreferrer">NeoSys Consulting — Découvrez nos solutions numériques</a></footer>
+</main><script src="/assets/encaissement.js?v=1.7.0" defer></script></body></html>
